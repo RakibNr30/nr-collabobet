@@ -16,7 +16,7 @@
                 <div class="card-body">
                   <form role="form" method="POST" action="/session">
                     @csrf
-                    <label>Email</label>
+                    <label>Mobile</label>
                     <div class="mb-3">
                       <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile" value="01710115566" aria-label="Mobile" aria-describedby="mobile-addon">
                       @error('mobile')

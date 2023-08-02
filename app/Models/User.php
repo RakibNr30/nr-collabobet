@@ -65,6 +65,11 @@ class User extends Authenticatable implements HasMedia
         'is_tc_accepted' => 'integer',
     ];
 
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
     // get photo id front attribute
     public function getPhotoIdFrontAttribute()
     {

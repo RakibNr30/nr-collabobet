@@ -24,10 +24,11 @@ Route::middleware(['middleware' => 'auth'])->prefix('portal')->name('portal.')->
 
     Route::get('/', [HomeController::class, 'home']);
 
-	Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+	Route::get('dashboard', [\App\Http\Controllers\Portal\DashboardController::class, 'index'])->name('dashboard');
+	Route::post('user-personal-details', [\App\Http\Controllers\Portal\UserProfileController::class, 'postPersonalDetails'])->name('user-personal-details.update');
+	Route::post('user-verification', [\App\Http\Controllers\Portal\UserProfileController::class, 'postVerification'])->name('user-verification.update');
 
-	Route::post('user-personal-details', [\App\Http\Controllers\UserProfileController::class, 'postPersonalDetails'])->name('user-personal-details.update');
-	Route::post('user-verification', [\App\Http\Controllers\UserProfileController::class, 'postVerification'])->name('user-verification.update');
+	Route::resource('user', \App\Http\Controllers\Portal\UserController::class);
 
 	Route::get('billing', function () {
 		return view('billing');
@@ -62,8 +63,8 @@ Route::middleware(['middleware' => 'auth'])->prefix('portal')->name('portal.')->
 	})->name('sign-up');
 
     Route::get('/logout', [SessionsController::class, 'destroy'])->name('logout');
-	Route::get('/user', [UserInfoController::class, 'create']);
-	Route::post('/user', [UserInfoController::class, 'store']);
+	/*Route::get('/user', [UserInfoController::class, 'create']);
+	Route::post('/user', [UserInfoController::class, 'store']);*/
     Route::get('/login', function () {
 		return view('dashboard');
 	})->name('sign-up');

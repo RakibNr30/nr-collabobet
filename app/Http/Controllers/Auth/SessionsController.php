@@ -23,7 +23,7 @@ class SessionsController extends Controller
         if(Auth::attempt($attributes))
         {
             session()->regenerate();
-            return redirect()->route('portal.dashboard')->with(['success'=>'You are logged in.']);
+            return redirect()->route('portal.dashboard.index')->with(['success'=>'You are logged in.']);
         }
         else{
             return back()->withErrors(['mobile'=>'Mobile or password invalid.']);

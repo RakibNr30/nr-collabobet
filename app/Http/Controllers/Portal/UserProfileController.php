@@ -46,7 +46,7 @@ class UserProfileController extends Controller
             session()->flash('error', 'Personal details can not be updated.');
         }
 
-        return redirect()->route('portal.dashboard');
+        return redirect()->route('portal.dashboard.index');
     }
 
     public function postVerification(Request $request)
@@ -81,11 +81,9 @@ class UserProfileController extends Controller
 
             DB::rollBack();
 
-            dd($exception);
-
             session()->flash('error', 'Documents for verification can not be submitted.');
         }
 
-        return redirect()->route('portal.dashboard');
+        return redirect()->route('portal.dashboard.index');
     }
 }

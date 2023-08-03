@@ -5,17 +5,18 @@ namespace App\Http\Controllers\Portal;
 use App\Constants\ProfileStatus;
 use App\Constants\UserType;
 use App\Http\Controllers\Controller;
+use App\Models\Faq;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class UserController extends Controller
+class FaqController extends Controller
 {
     public function index()
     {
-        $users = User::query()->where('user_type', UserType::USER)->paginate(20);
+        $faqs = Faq::query()->get();
 
-        return view('portal.user.index', compact('users'));
+        return view('portal.faq.index', compact('faqs'));
     }
 
     public function show(User $user)

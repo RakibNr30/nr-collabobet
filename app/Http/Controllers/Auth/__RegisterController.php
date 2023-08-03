@@ -146,7 +146,7 @@ class __RegisterController extends Controller
             DB::rollBack();
         }
 
-        return redirect()->route('portal.dashboard');
+        return redirect()->route('portal.dashboard.index');
     }
 
     private function getMobileVerification()

@@ -5,7 +5,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetController;
 use App\Http\Controllers\Auth\SessionsController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserInfoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,53 +23,23 @@ Route::middleware(['middleware' => 'auth'])->prefix('portal')->name('portal.')->
 
     Route::get('/', [HomeController::class, 'home']);
 
-	Route::get('dashboard', [\App\Http\Controllers\Portal\DashboardController::class, 'index'])->name('dashboard');
+    // dashboard
+	Route::get('dashboard', [\App\Http\Controllers\Portal\DashboardController::class, 'index'])->name('dashboard.index');
 	Route::post('user-personal-details', [\App\Http\Controllers\Portal\UserProfileController::class, 'postPersonalDetails'])->name('user-personal-details.update');
 	Route::post('user-verification', [\App\Http\Controllers\Portal\UserProfileController::class, 'postVerification'])->name('user-verification.update');
 
+    // other
 	Route::resource('user', \App\Http\Controllers\Portal\UserController::class);
+    Route::get('profile', [\App\Http\Controllers\Portal\ProfileController::class, 'index'])->name('profile.index');
+    Route::resource('faq', \App\Http\Controllers\Portal\FaqController::class);
+    Route::resource('contact', \App\Http\Controllers\Portal\ContactController::class);
 
-	Route::get('billing', function () {
-		return view('billing');
-	})->name('billing');
-
-	Route::get('profile', function () {
-		return view('profile');
-	})->name('profile');
-
-	Route::get('rtl', function () {
-		return view('rtl');
-	})->name('rtl');
-
-	Route::get('user-management', function () {
-		return view('laravel-examples/user-management');
-	})->name('user-management');
-
-	Route::get('tables', function () {
-		return view('tables');
-	})->name('tables');
-
-    Route::get('virtual-reality', function () {
-		return view('virtual-reality');
-	})->name('virtual-reality');
-
-    Route::get('static-sign-in', function () {
-		return view('static-sign-in');
-	})->name('sign-in');
-
-    Route::get('static-sign-up', function () {
-		return view('static-sign-up');
-	})->name('sign-up');
-
+    // auth
     Route::get('/logout', [SessionsController::class, 'destroy'])->name('logout');
-	/*Route::get('/user', [UserInfoController::class, 'create']);
-	Route::post('/user', [UserInfoController::class, 'store']);*/
     Route::get('/login', function () {
-		return view('dashboard');
-	})->name('sign-up');
+		return redirect()->route('portal.dashboard.index');
+	});
 });
-
-
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create'])->name('register.create');
@@ -81,13 +50,16 @@ Route::group(['middleware' => 'guest'], function () {
 	Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
 	Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
 	Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
-
 });
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return auth()->check()
+            ? redirect()->route('portal.dashboard.index')
+            : redirect()->route('login');
 });
 
 Route::get('/login', function () {
-    return view('session/login-session');
+    return auth()->check()
+        ? redirect()->route('portal.dashboard.index')
+        : view('session/login-session');
 })->name('login');

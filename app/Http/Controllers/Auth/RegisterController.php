@@ -111,7 +111,7 @@ class RegisterController extends Controller
 
                 session()->flash('success', 'Your profile has been created.');
 
-                return redirect()->route('portal.dashboard');
+                return redirect()->route('portal.dashboard.index');
             }
             else
             {

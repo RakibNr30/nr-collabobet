@@ -112,11 +112,18 @@
                                             </td>
                                         </tr>
                                     @empty
-
+                                        <tr class="">
+                                            <td class="text-center" colspan="10">No data found.</td>
+                                        </tr>
                                     @endforelse
                                     </tbody>
                                 </table>
                             </div>
+
+                            <div class="mt-3">
+                                {{ $users->links('components.pagination') }}
+                            </div>
+
                         </div>
                     </div>
                 </div>

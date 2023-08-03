@@ -6,6 +6,6 @@ class HomeController extends Controller
 {
     public function home()
     {
-        return redirect()->route('portal.dashboard');
+        return redirect()->route('portal.dashboard.index');
     }
 }

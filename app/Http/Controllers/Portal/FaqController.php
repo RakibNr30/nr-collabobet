@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Portal;
 
-use App\Constants\ProfileStatus;
-use App\Constants\UserType;
+use App\Helpers\AuthUser;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,30 +12,103 @@ class FaqController extends Controller
 {
     public function index()
     {
-        $faqs = Faq::query()->get();
+        if (AuthUser::isUser()) {
+            $faqs = Faq::query()->get();
+        } else {
+            $faqs = Faq::query()->paginate();
+        }
 
         return view('portal.faq.index', compact('faqs'));
     }
 
-    public function show(User $user)
+    public function create()
     {
-        return view('portal.user.show', compact('user'));
+        return view('portal.faq.create');
     }
 
-    public function update(Request $request, User $user)
+    public function store(Request $request)
+    {
+        $rules = [
+            'question' => 'required|max:255',
+            'answer' => 'required|max:1000',
+        ];
+
+        $request->validate($rules);
+
+        try {
+
+            DB::beginTransaction();
+
+            Faq::query()->create($request->all());
+
+            DB::commit();
+
+            session()->flash('success', 'Faq added successfully.');
+
+        } catch (\Exception $exception) {
+
+            DB::rollBack();
+
+            session()->flash('error', 'Something went wrong.');
+
+            return redirect()->back()->withInput($request->all());
+        }
+
+        return redirect()->route('portal.faq.index');
+    }
+
+    public function show(Faq $faq)
+    {
+        return view('portal.faq.show', compact('faq'));
+    }
+
+
+    public function edit(Faq $faq)
+    {
+        return view('portal.faq.edit', compact('faq'));
+    }
+
+
+    public function update(Request $request, Faq $faq)
+    {
+        $rules = [
+            'question' => 'required|max:255',
+            'answer' => 'required|max:1000',
+        ];
+
+        $request->validate($rules);
+
+        try {
+
+            DB::beginTransaction();
+
+            $faq->update($request->all());
+
+            DB::commit();
+
+            session()->flash('success', 'Faq updated successfully.');
+
+        } catch (\Exception $exception) {
+
+            DB::rollBack();
+
+            session()->flash('error', 'Something went wrong.');
+        }
+
+        return redirect()->back();
+    }
+
+    public function destroy(Faq $faq)
     {
         try {
 
             DB::beginTransaction();
 
-            $user->update($request->all());
+            $faq->delete();
 
             DB::commit();
 
-            if ($user->profile_status == ProfileStatus::VERIFICATION_COMPLETED)
-                session()->flash('success', 'Verification accepted successfully.');
-            else
-                session()->flash('success', 'Verification declined successfully.');
+            session()->flash('success', 'Faq deleted successfully.');
 
         } catch (\Exception $exception) {
 

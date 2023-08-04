@@ -24,20 +24,22 @@
         <div class="mt-3">
           <h6 class="mb-0">Safety</h6>
         </div>
-        <a href="javascript:void(0)" class="switch-trigger background-color">
+        <a href="{{ route('portal.user-change-password.edit') }}" class="switch-trigger background-color {{ Request::is('portal/user-change-password') ? 'text-primary' : '' }}">
             Change Password
         </a>
 
-        <div class="mt-3">
-            <h6 class="mb-0">Service</h6>
-        </div>
-        <a href="javascript:void(0)" class="switch-trigger background-color">
-            Faq
-        </a>
-          <br>
-        <a href="javascript:void(0)" class="switch-trigger background-color my-1">
-          Contact Us
-        </a>
+        @if(\App\Helpers\AuthUser::isUser())
+              <div class="mt-3">
+                  <h6 class="mb-0">Service</h6>
+              </div>
+              <a href="{{ route('portal.faq.index') }}" class="switch-trigger background-color {{ Request::is('portal/faq') ? 'text-primary' : '' }}">
+                  Faq
+              </a>
+              <br>
+              <a href="{{ route('portal.contact.index') }}" class="switch-trigger background-color my-1 {{ Request::is('portal/contact') ? 'text-primary' : '' }}">
+                  Contact Us
+              </a>
+          @endif
 
           <hr class="horizontal dark my-5">
 

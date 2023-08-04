@@ -16,13 +16,13 @@ class ContactController extends Controller
         return view('portal.contact.index', compact('contact'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $rules = [
-            'email' => 'email|max:100',
-            'mobile' => 'numeric|max:100',
-            'fax' => 'numeric|max:100',
-            'address' => 'max:500',
+            'email' => 'nullable|email|max:100',
+            'mobile' => 'nullable|max:100',
+            'fax' => 'nullable|max:100',
+            'address' => 'nullable|max:500',
         ];
 
         $request->validate($rules);

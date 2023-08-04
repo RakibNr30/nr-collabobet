@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid- py-2">
-        <div class="row">
+        <div class="table-c row">
             <div class="col-12">
                 <div class="card mb-4 mx-4">
                     <div class="card-header pb-0">
@@ -10,7 +10,7 @@
                             <div>
                                 <h5 class="mb-0">{{ $user->full_name }}</h5>
                             </div>
-                            <a href="{{ route('portal.dashboard.index') }}" class="btn bg-gradient-dark btn-sm mb-0" type="button">Back</a>
+                            <a href="{{ route('portal.dashboard.index') }}" class="btn bg-gradient-primary btn-sm mb-0" type="button">Back</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">

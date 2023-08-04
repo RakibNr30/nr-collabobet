@@ -1,16 +1,16 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-    <div class="container-fluid- py-2">
-        <div class="row">
+    <div class="container-fluid- user py-2">
+        <div class="table-c row">
             <div class="col-12">
                 <div class="card mb-4 mx-4">
-                    <div class="card-header pb-0">
+                    <div class="card-header pb-4 pt-0">
                         <div class="d-flex flex-row justify-content-between">
                             <div>
                                 <h5 class="mb-0">{{ $user->full_name }}</h5>
                             </div>
-                            <a href="{{ route('portal.user.index') }}" class="btn bg-gradient-dark btn-sm mb-0" type="button">Back</a>
+                            <a href="{{ route('portal.user.index') }}" class="btn bg-gradient-primary btn-sm mb-0" type="button">Back</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
@@ -110,6 +110,11 @@
 @endsection
 
 @push('dashboard')
-
+<style>
+    .table thead th,
+    .table thead td {
+        text-align: left !important;
+    }
+</style>
 @endpush
 

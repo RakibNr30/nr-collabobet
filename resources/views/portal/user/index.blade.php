@@ -2,10 +2,10 @@
 
 @section('content')
         <div class="container-fluid- user py-2">
-            <div class="row">
+            <div class="table-c row">
                 <div class="col-12">
                     <div class="card mb-2 mx-2">
-                        <div class="card-header pb-0">
+                        <div class="card-header pb-4">
                             <div class="d-flex flex-row justify-content-between">
                                 <div>
                                     <h5 class="mb-0">Users</h5>

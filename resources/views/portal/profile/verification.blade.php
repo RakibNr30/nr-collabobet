@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    <button type="submit" class="btn bg-gradient-dark btn-md mt-4 mb-4">Verify & Next</button>
+                                    <button type="submit" class="btn bg-gradient-primary btn-md mt-4 mb-4">Verify</button>
                                 </div>
                             </form>
 
@@ -79,7 +79,7 @@
                     </div>
                 </div>
             @else
-                <div class="container-fluid- py-4">
+                <div class="container-fluid- verification">
                     <div class="card">
                         <div class="card-header pb-0 px-3">
                             <h6 class="mb-0">Hi!</h6>
@@ -93,7 +93,7 @@
         @endif
 
         @if(\App\Helpers\AuthUser::getProfileStatus() == \App\Constants\ProfileStatus::VERIFICATION_COMPLETED)
-            <div class="container-fluid- py-4">
+            <div class="container-fluid- verification">
                 <div class="card">
                     <div class="card-header pb-0 px-3">
                         <h6 class="mb-0">Hi!</h6>

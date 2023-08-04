@@ -44,7 +44,7 @@
     <div x-data="{ show: true}"
         x-init="setTimeout(() => show = false, 4000)"
         x-show="show"
-        class="position-fixed bg-success rounded right-3 text-sm py-2 px-4">
+        class="position-fixed notification bg-success right-3 text-sm py-2 px-4 bottom-0 right-0 w-100 text-center" style="background-color: #17c1e8; color: #fff; {{ auth()->check() && \App\Helpers\AuthUser::isUser() ? 'bottom: 48px !important;' : '' }}">
       <p class="m-0">{{ session('success')}}</p>
     </div>
   @endif
@@ -52,7 +52,7 @@
       <div x-data="{ show: true}"
            x-init="setTimeout(() => show = false, 4000)"
            x-show="show"
-           class="position-fixed bg-danger rounded right-3 text-sm py-2 px-4">
+           class="position-fixed notification bg-danger right-3 text-sm py-2 px-4 bottom-0 right-0 w-100 text-center" style="{{ auth()->check() && \App\Helpers\AuthUser::isUser() ? 'bottom: 48px !important;' : '' }}">
           <p class="m-0 text-white">{{ session('error')}}</p>
       </div>
   @endif

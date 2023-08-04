@@ -99,14 +99,23 @@
 .w-99{width:99%!important}
 .w-100{width:100%!important}
 
+.table-c.row {
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: calc(var(--bs-gutter-x)*-.5);
+    margin-right: calc(var(--bs-gutter-x)*-.5);
+    margin-top: calc(var(--bs-gutter-y)*-1);
+}
 
-.dashboard .card, .user .card, .verification .card {
+.dashboard .card, .user .card, .faq .card, .verification .card, .change-password .card {
      box-shadow: unset;
      background-color: transparent;
      border-radius: unset;
      border: unset;
  }
-.dashboard .card-header, .user .card-header, .verification .card-header {
+.dashboard .card-header, .user .card-header, .faq .card-header, .verification .card-header, .change-password .card-header {
     background-color: unset;
 }
 
@@ -157,14 +166,16 @@
 }
 
 .navbar-vertical.navbar-expand-xs {
-    bottom: 48px;
     max-width: 17.11rem !important;
+}
+
+.sidenav-custom {
+    bottom: 48px;
 }
 
 .sidenav {
     z-index: 1021;
 }
-
 
 .sidenav-header {
     height: 8.875rem;
@@ -187,6 +198,9 @@
 @media (min-width: 1199.98px) {
     .nav-image img {
         display: none;
+    }
+    .notification {
+        left: 17.11rem;
     }
 }
 

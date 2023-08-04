@@ -81,7 +81,7 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn bg-gradient-dark btn-md mt-4 mb-4">Submit and Next</button>
+                                <button type="submit" class="btn bg-gradient-primary btn-md mt-4 mb-4">Submit and Next</button>
                             </div>
                         </form>
 
@@ -90,7 +90,7 @@
             </div>
         @endif
 
-        @if(\App\Helpers\AuthUser::getProfileStatus() == \App\Constants\ProfileStatus::PERSONAL_DETAILS_CREATED)
+        @if(in_array(\App\Helpers\AuthUser::getProfileStatus(), [App\Constants\ProfileStatus::PERSONAL_DETAILS_CREATED, \App\Constants\ProfileStatus::VERIFICATION_COMPLETED]))
             <div class="card">
                 <div class="card-body p-3">
                     <div class="row">
@@ -98,7 +98,7 @@
                             <div class="d-flex flex-column h-100">
                                 <p class="mb-1 pt-2 text-bold">Welcome {{ auth()->user()->full_name }}</p>
 
-                                @if(!\App\Helpers\AuthUser::isVerificationRequested())
+                                @if(!\App\Helpers\AuthUser::isVerificationRequested() && !\App\Constants\ProfileStatus::VERIFICATION_COMPLETED)
                                 <a class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="{{ route('portal.user-verification.edit') }}">
                                     Verify Identity
                                     <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>

@@ -8,9 +8,8 @@
     </a>
   </div>
   <hr class="horizontal dark mt-0">
-  <div class="collapse navbar-collapse  w-auto" id="sidenav-collapse-main">
-    <ul class="navbar-nav">
-
+  <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+    <ul class="navbar-nav {{ \App\Helpers\AuthUser::isAdmin() ? '' : 'sidenav-custom' }}">
         @if(\App\Helpers\AuthUser::isAdmin())
             <li class="nav-item">
                 <a class="nav-link {{ (Request::is('portal/dashboard') ? 'active' : '') }}" href="{{ url('/portal/dashboard') }}">
@@ -31,7 +30,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ (Request::is('portal/faq') ? 'active' : '') }} " href="{{ url('/portal/faq') }}">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-solid fa-question text-{{ (Request::is('portal/profile') ? 'white' : 'dark')  }}"></i>
+                        <i class="fas fa-solid fa-question text-{{ (Request::is('portal/faq') ? 'white' : 'dark')  }}"></i>
                     </div>
                     <span class="nav-link-text ms-1">Faqs</span>
                 </a>
@@ -39,7 +38,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ (Request::is('portal/contact') ? 'active' : '') }} " href="{{ url('/portal/contact') }}">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-map-marker-alt text-{{ (Request::is('portal/profile') ? 'white' : 'dark')  }}"></i>
+                        <i class="fas fa-map-marker-alt text-{{ (Request::is('portal/contact') ? 'white' : 'dark')  }}"></i>
                     </div>
                     <span class="nav-link-text ms-1">Contacts</span>
                 </a>
@@ -83,7 +82,6 @@
                 </a>
             </li>
         @endif
-
     </ul>
   </div>
 </aside>

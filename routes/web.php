@@ -29,6 +29,8 @@ Route::middleware(['middleware' => 'auth'])->prefix('portal')->name('portal.')->
 	Route::post('user-personal-details', [\App\Http\Controllers\Portal\UserProfileController::class, 'postPersonalDetails'])->name('user-personal-details.update');
 	Route::get('user-verification', [\App\Http\Controllers\Portal\UserProfileController::class, 'getVerification'])->name('user-verification.edit');
 	Route::post('user-verification', [\App\Http\Controllers\Portal\UserProfileController::class, 'postVerification'])->name('user-verification.update');
+    Route::get('user-change-password', [\App\Http\Controllers\Portal\UserProfileController::class, 'getChangePassword'])->name('user-change-password.edit');
+	Route::post('user-change-password', [\App\Http\Controllers\Portal\UserProfileController::class, 'postChangePassword'])->name('user-change-password.update');
 
     // other
 	Route::resource('user', \App\Http\Controllers\Portal\UserController::class);

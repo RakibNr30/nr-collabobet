@@ -7,7 +7,9 @@ use App\Helpers\AuthUser;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserProfileController extends Controller
@@ -43,7 +45,9 @@ class UserProfileController extends Controller
 
             DB::rollBack();
 
-            session()->flash('error', 'Personal details can not be updated.');
+            session()->flash('error', 'Something went wrong!.');
+
+            return redirect()->back()->withInput($request->all());
         }
 
         return redirect()->route('portal.dashboard.index');
@@ -51,7 +55,7 @@ class UserProfileController extends Controller
 
     public function getVerification()
     {
-        return view('portal.profile.verification_edit');
+        return view('portal.profile.verification');
     }
 
     public function postVerification(Request $request)
@@ -86,7 +90,57 @@ class UserProfileController extends Controller
 
             DB::rollBack();
 
-            session()->flash('error', 'Documents for verification can not be submitted.');
+            session()->flash('error', 'Something went wrong!.');
+
+            return redirect()->back()->withInput($request->all());
+        }
+
+        return redirect()->route('portal.dashboard.index');
+    }
+
+    public function getChangePassword()
+    {
+        return view('portal.profile.change_password');
+    }
+
+    public function postChangePassword(Request $request)
+    {
+        $request->validate([
+            'old_password' => ['required', 'max: 100'],
+            'new_password' => ['required', 'min:6', 'max: 100', 'confirmed'],
+            'new_password_confirmation' => ['required', 'max: 100'],
+        ]);
+
+        try {
+
+            DB::beginTransaction();
+
+            $id = AuthUser::getId();
+
+            $data = $request->all();
+
+            $data['password'] = bcrypt($data['new_password']);
+
+            $user = User::query()->find($id);
+
+            if (!Hash::check($data['old_password'], $user->password)) {
+                session()->flash('error', 'Old password do not match.');
+                return redirect()->back();
+            }
+
+            $user->update($data);
+
+            DB::commit();
+
+            session()->flash('success', 'Password changed successfully.');
+
+        } catch (\Exception $exception) {
+
+            DB::rollBack();
+
+            session()->flash('error', 'Something went wrong.');
+
+            return redirect()->back();
         }
 
         return redirect()->route('portal.dashboard.index');

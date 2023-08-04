@@ -98,3 +98,116 @@
 .w-98{width:98%!important}
 .w-99{width:99%!important}
 .w-100{width:100%!important}
+
+
+.dashboard .card, .user .card, .verification .card {
+     box-shadow: unset;
+     background-color: transparent;
+     border-radius: unset;
+     border: unset;
+ }
+.dashboard .card-header, .user .card-header, .verification .card-header {
+    background-color: unset;
+}
+
+@media (max-width: 575.98px) {
+    .dashboard .card .h5, h5 {
+        font-size: 0.75rem;
+    }
+
+    .dashboard .card .icon-shape {
+        background-position: 50%;
+        border-radius: 0.25rem;
+        height: 24px;
+        width: 24px;
+    }
+
+    .dashboard .card  .icon-shape i {
+        top: -3px;
+        font-size: 0.75rem !important;
+    }
+}
+
+.f-nav-main {
+    display: table;
+    width: 100%;
+}
+.f-nav {
+    width: 25%;
+    height: 48px;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.f-nav i {
+    font-size: 24px !important;
+    color: #ffffff;
+}
+
+.f-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.fixed-plugin h5 {
+    font-size: 1.5rem;
+}
+
+.navbar-vertical.navbar-expand-xs {
+    bottom: 48px;
+    max-width: 17.11rem !important;
+}
+
+.sidenav {
+    z-index: 1021;
+}
+
+
+.sidenav-header {
+    height: 8.875rem;
+}
+
+.navbar-vertical .navbar-brand-img, .navbar-vertical .navbar-brand>img {
+    margin: auto;
+    max-height: 6rem;
+}
+
+.navbar {
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.16) !important;
+}
+
+.nav-image img {
+    height: 80px;
+    position: absolute;
+}
+
+@media (min-width: 1199.98px) {
+    .nav-image img {
+        display: none;
+    }
+}
+
+.sidenav-header {
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    width: 17.11rem;
+}
+
+.sidenav-header i {
+    font-size: 20px !important;
+    opacity: 1 !important;
+}
+
+.navbar .nav-link i, .navbar .navbar-brand i {
+    font-size: 20px;
+}
+
+.db-coins {
+    font-size: 13rem;
+    padding: 3rem;
+    color: #fff;
+}

@@ -49,6 +49,11 @@ class UserProfileController extends Controller
         return redirect()->route('portal.dashboard.index');
     }
 
+    public function getVerification()
+    {
+        return view('portal.profile.verification_edit');
+    }
+
     public function postVerification(Request $request)
     {
         $request->validate([

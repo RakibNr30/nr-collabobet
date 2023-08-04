@@ -25,7 +25,9 @@ Route::middleware(['middleware' => 'auth'])->prefix('portal')->name('portal.')->
 
     // dashboard
 	Route::get('dashboard', [\App\Http\Controllers\Portal\DashboardController::class, 'index'])->name('dashboard.index');
+
 	Route::post('user-personal-details', [\App\Http\Controllers\Portal\UserProfileController::class, 'postPersonalDetails'])->name('user-personal-details.update');
+	Route::get('user-verification', [\App\Http\Controllers\Portal\UserProfileController::class, 'getVerification'])->name('user-verification.edit');
 	Route::post('user-verification', [\App\Http\Controllers\Portal\UserProfileController::class, 'postVerification'])->name('user-verification.update');
 
     // other

@@ -32,10 +32,13 @@ Route::middleware(['middleware' => 'auth'])->prefix('portal')->name('portal.')->
     Route::get('user-change-password', [\App\Http\Controllers\Portal\UserProfileController::class, 'getChangePassword'])->name('user-change-password.edit');
 	Route::post('user-change-password', [\App\Http\Controllers\Portal\UserProfileController::class, 'postChangePassword'])->name('user-change-password.update');
 
-    // other
+    // user & profile
 	Route::resource('user', \App\Http\Controllers\Portal\UserController::class);
 	Route::resource('transaction', \App\Http\Controllers\Portal\TransactionController::class);
     Route::get('profile', [\App\Http\Controllers\Portal\ProfileController::class, 'index'])->name('profile.index');
+    Route::post('profile-reward', [\App\Http\Controllers\Portal\ProfileController::class, 'postRewards'])->name('profile-reward.store');
+
+    // others
     Route::resource('faq', \App\Http\Controllers\Portal\FaqController::class);
     Route::resource('contact', \App\Http\Controllers\Portal\ContactController::class);
 

@@ -148,6 +148,11 @@
     color: #fff;
 }
 
+.badge.badge-disable {
+    background-color: #aab2b4;
+    color: #fff;
+}
+
 @media (max-width: 575.98px) {
     .dashboard .card .h5, h5 {
         font-size: 0.75rem;

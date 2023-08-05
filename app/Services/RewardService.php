@@ -3,8 +3,14 @@
 namespace App\Services;
 
 use App\Constants\RewardType;
+use App\Constants\TransactionStatus;
+use App\Constants\TransactionType;
+use App\Helpers\AuthUser;
+use App\Models\Balance;
 use App\Models\Reward;
+use App\Models\Transaction;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class RewardService
 {
@@ -19,6 +25,11 @@ class RewardService
 
         if (!empty($reward)) {
             $total_rewards = $reward->total_rewards + 1;
+        }
+
+        if ($rewardType == RewardType::BENEFACTOR) {
+            $user = User::query()->find($userId);
+            $total_rewards = intval($user->refer_reward_amount / 100);
         }
 
         if ($rewardType == RewardType::GENIUS) {
@@ -37,6 +48,40 @@ class RewardService
                 'amount' => RewardType::getAmount($rewardType),
                 'is_available' => true,
                 'total_rewards' => $total_rewards,
+            ]);
+        }
+    }
+
+    public static function getRewards($userId, $rewardType): void
+    {
+        $rewardable = self::rewardAble($userId, $rewardType);
+
+        if ($rewardable[0]) {
+            $reward = Reward::query()
+                ->where('user_id', $userId)
+                ->where('type', $rewardType)
+                ->first();
+
+            $reward->update([
+                'claimed_rewards' => $reward->claimed_rewards + $rewardable[0]
+            ]);
+
+            $balance = Balance::query()->where('user_id', $userId)->firstOrCreate(['user_id' => $userId]);
+
+            $balance->update([
+                'amount' => $balance->amount + $rewardable[1],
+            ]);
+
+            $user = User::query()->find(AuthUser::getId());
+
+            Transaction::query()->create([
+                'type' => TransactionType::IN,
+                'balance_id' => $balance->id,
+                'amount' => $rewardable[1],
+                'account_owner' => $user->full_name,
+                'uuid' => Str::uuid()->toString(),
+                'user_id' => $userId,
+                'status' => TransactionStatus::ACCEPTED,
             ]);
         }
     }
@@ -75,7 +120,7 @@ class RewardService
         return false;
     }
 
-    public static function isRewardable($userId, $rewardType): bool
+    public static function rewardAble($userId, $rewardType): array
     {
         $reward = Reward::query()
             ->where('user_id', $userId)
@@ -83,32 +128,12 @@ class RewardService
             ->first();
 
         if (empty($reward)) {
-            return false;
+            return [0, 0];
         }
 
-        if ($rewardType == RewardType::PARTICIPANT)
-        {
-            if ($reward->count == 1)
-                return true;
-        }
-
-        if ($rewardType == RewardType::RECOMMENDATION)
-        {
-            if ($reward->count > 0 && $reward->is_available)
-                return true;
-        }
-
-        if ($rewardType == RewardType::BENEFACTOR)
-        {
-            //
-        }
-
-        if ($rewardType == RewardType::GENIUS)
-        {
-            if ($reward->total_rewards >= 1 && $reward->count <=50 && $reward->is_available)
-                return true;
-        }
-
-        return false;
+        return [
+            $reward->total_rewards - $reward->claimed_rewards,
+            ($reward->total_rewards - $reward->claimed_rewards) * $reward->amount
+        ];
     }
 }

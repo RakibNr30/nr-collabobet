@@ -98,7 +98,7 @@
                                         Donations
                                     </th>
                                     <td class="text-left text-xxs font-weight-bolder">
-                                        <p class="text-xs font-weight-bold mb-0">{{ $user->donations ?? 0 }}€</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $user->refer_reward_amount ?? 0 }}€</p>
                                     </td>
                                 </tr>
                                 </thead>
@@ -109,101 +109,146 @@
             </div>
         </div>
 
-        <div class="table-c row mb-5">
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card mx-4">
-                    <div class="card-body p-3">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="numbers">
-                                    <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[€400] Participant – Participate in Collabobet</p>
-                                    <span style="font-size: 10px;">For your participation you just need to verify on your account</span>
-                                    <h5 class="font-weight-bolder mt-2">
-                                        <span class="text-primary text-xs font-weight-bolder">0 / 1</span>
-                                    </h5>
+        @if(\App\Helpers\AuthUser::isVerified())
+            <div class="table-c row mb-5">
+                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                    <div class="card mx-4">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="numbers">
+                                        <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[€400] Participant – Participate in Collabobet</p>
+                                        <span style="font-size: 10px;">For your participation you just need to verify on your account</span>
+                                        <h5 class="font-weight-bolder mt-2">
+                                            <span class="text-primary text-xs font-weight-bolder">{{ $rewards[\App\Constants\RewardType::PARTICIPANT]['claimed_rewards'] ?? 0 }} / {{ \App\Constants\RewardType::getMax(\App\Constants\RewardType::PARTICIPANT) }}</span>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    @if($rewards[\App\Constants\RewardType::PARTICIPANT]['rewardable'] ?? 0)
+                                        <a href="#" onclick="submit('reward-participant')">
+                                            <span class="badge badge-info">Get Reward ({{ $rewards[\App\Constants\RewardType::PARTICIPANT]['rewardable'] ?? 0 }})</span>
+                                        </a>
+                                        <form id="reward-participant" method="POST" action="{{ route('portal.profile-reward.store') }}" style="display: none;">
+                                            @csrf
+                                            <input type="hidden" name="type" value="{{ \App\Constants\RewardType::PARTICIPANT }}">
+                                            <input type="hidden" name="rewardable" value="{{ $rewards[\App\Constants\RewardType::PARTICIPANT]['rewardable'] ?? 0 }}">
+                                            <input type="hidden" name="rewardable_amount" value="{{ $rewards[\App\Constants\RewardType::PARTICIPANT]['rewardable_amount'] ?? 0 }}">
+                                        </form>
+                                    @else
+                                        <span class="badge badge-disable">Get Reward ({{ $rewards[\App\Constants\RewardType::PARTICIPANT]['rewardable'] ?? 0 }})</span>
+                                    @endif
                                 </div>
                             </div>
-                            <div class="col-12 mt-2">
-                                <a href="#">
-                                    <span class="badge badge-info">Get Reward</span>
-                                </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                    <div class="card mx-4">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="numbers">
+                                        <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[€200] Recommendation – Recommend Collabobet to your friends</p>
+                                        <span style="font-size: 10px;">Your friend need to sign up on collabobet and verify his account</span>
+                                        <h5 class="font-weight-bolder mt-2">
+                                            <span class="text-primary text-xs font-weight-bolder">{{ $rewards[\App\Constants\RewardType::RECOMMENDATION]['claimed_rewards'] ?? 0 }} / {{ \App\Constants\RewardType::getMax(\App\Constants\RewardType::RECOMMENDATION) }}</span>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    @if($rewards[\App\Constants\RewardType::RECOMMENDATION]['rewardable'] ?? 0)
+                                        <a href="#" onclick="submit('reward-recommendation')">
+                                            <span class="badge badge-info">Get Reward ({{ $rewards[\App\Constants\RewardType::RECOMMENDATION]['rewardable'] ?? 0 }})</span>
+                                        </a>
+                                        <form id="reward-recommendation" method="POST" action="{{ route('portal.profile-reward.store') }}" style="display: none;">
+                                            @csrf
+                                            <input type="hidden" name="type" value="{{ \App\Constants\RewardType::RECOMMENDATION }}">
+                                            <input type="hidden" name="rewardable" value="{{ $rewards[\App\Constants\RewardType::RECOMMENDATION]['rewardable'] ?? 0 }}">
+                                            <input type="hidden" name="rewardable_amount" value="{{ $rewards[\App\Constants\RewardType::RECOMMENDATION]['rewardable_amount'] ?? 0 }}">
+                                        </form>
+                                    @else
+                                        <span class="badge badge-disable">Get Reward ({{ $rewards[\App\Constants\RewardType::RECOMMENDATION]['rewardable'] ?? 0 }})</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                    <div class="card mx-4">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="numbers">
+                                        <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[€100] Benefactor – Reach Donations</p>
+                                        <span style="font-size: 10px;">WirWe donate $10 for each participant to charity.</span>
+                                        <h5 class="font-weight-bolder mt-2">
+                                            <span class="text-primary text-xs font-weight-bolder">{{ $rewards[\App\Constants\RewardType::BENEFACTOR]['claimed_rewards'] ?? 0 }} / {{ \App\Constants\RewardType::getMax(\App\Constants\RewardType::BENEFACTOR) }}</span>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    @if($rewards[\App\Constants\RewardType::BENEFACTOR]['rewardable'] ?? 0)
+                                        <a href="#" onclick="submit('reward-benefactor')">
+                                            <span class="badge badge-info">Get Reward ({{ $rewards[\App\Constants\RewardType::BENEFACTOR]['rewardable'] ?? 0 }})</span>
+                                        </a>
+                                        <form id="reward-benefactor" method="POST" action="{{ route('portal.profile-reward.store') }}" style="display: none;">
+                                            @csrf
+                                            <input type="hidden" name="type" value="{{ \App\Constants\RewardType::BENEFACTOR }}">
+                                            <input type="hidden" name="rewardable" value="{{ $rewards[\App\Constants\RewardType::BENEFACTOR]['rewardable'] ?? 0 }}">
+                                            <input type="hidden" name="rewardable_amount" value="{{ $rewards[\App\Constants\RewardType::BENEFACTOR]['rewardable_amount'] ?? 0 }}">
+                                        </form>
+                                    @else
+                                        <span class="badge badge-disable">Get Reward ({{ $rewards[\App\Constants\RewardType::BENEFACTOR]['rewardable'] ?? 0 }})</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6">
+                    <div class="card mx-4">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="numbers">
+                                        <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[€500] Genius of Persuasion – Recommend 20 people</p>
+                                        <span style="font-size: 10px;">All your recommendations need to sign up on collabobet and verify their account</span>
+                                        <h5 class="font-weight-bolder mt-2">
+                                            <span class="text-primary text-xs font-weight-bolder">{{ $rewards[\App\Constants\RewardType::GENIUS]['claimed_rewards'] ?? 0 }} / {{ \App\Constants\RewardType::getMax(\App\Constants\RewardType::GENIUS) }}</span>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    @if($rewards[\App\Constants\RewardType::GENIUS]['rewardable'] ?? 0)
+                                        <a href="#" onclick="submit('reward-genius')">
+                                            <span class="badge badge-info">Get Reward ({{ $rewards[\App\Constants\RewardType::GENIUS]['rewardable'] ?? 0 }})</span>
+                                        </a>
+                                        <form id="reward-genius" method="POST" action="{{ route('portal.profile-reward.store') }}" style="display: none;">
+                                            @csrf
+                                            <input type="hidden" name="type" value="{{ \App\Constants\RewardType::GENIUS }}">
+                                            <input type="hidden" name="rewardable" value="{{ $rewards[\App\Constants\RewardType::GENIUS]['rewardable'] ?? 0 }}">
+                                            <input type="hidden" name="rewardable_amount" value="{{ $rewards[\App\Constants\RewardType::GENIUS]['rewardable_amount'] ?? 0 }}">
+                                        </form>
+                                    @else
+                                        <span class="badge badge-disable">Get Reward ({{ $rewards[\App\Constants\RewardType::GENIUS]['rewardable'] ?? 0 }})</span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card mx-4">
-                    <div class="card-body p-3">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="numbers">
-                                    <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[€200] Recommendation – Recommend Collabobet to your friends</p>
-                                    <span style="font-size: 10px;">Your friend need to sign up on collabobet and verify his account</span>
-                                    <h5 class="font-weight-bolder mt-2">
-                                        <span class="text-primary text-xs font-weight-bolder">0 / infinity</span>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <a href="#">
-                                    <span class="badge badge-info">Get Reward</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card mx-4">
-                    <div class="card-body p-3">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="numbers">
-                                    <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[€100] Benefactor – Reach Donations</p>
-                                    <span style="font-size: 10px;">WirWe donate $10 for each participant to charity.</span>
-                                    <h5 class="font-weight-bolder mt-2">
-                                        <span class="text-primary text-xs font-weight-bolder">€0 / €300</span>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <a href="#">
-                                    <span class="badge badge-info">Get Reward</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card mx-4">
-                    <div class="card-body p-3">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="numbers">
-                                    <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[€500] Genius of Persuasion – Recommend 20 people</p>
-                                    <span style="font-size: 10px;">All your recommendations need to sign up on collabobet and verify their account</span>
-                                    <h5 class="font-weight-bolder mt-2">
-                                        <span class="text-primary text-xs font-weight-bolder">0 / 50</span>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <a href="#">
-                                    <span class="badge badge-info">Get Reward</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        @endif
     </div>
 @endsection
 
 @push('dashboard')
-
+    <script>
+        function submit(formId) {
+            document.getElementById(formId).submit();
+        }
+    </script>
 @endpush
 

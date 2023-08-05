@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('user_type');
             $table->string('affiliate_code')->nullable();
             $table->string('refer_affiliate_code')->nullable();
+            $table->unsignedBigInteger('refer_reward')->nullable();
+            $table->unsignedDouble('refer_reward_amount')->nullable();
             $table->string('ssn')->nullable();
             $table->string('password')->nullable();
             $table->string('profile_status')->default(0)->comment('0. NONE, 1. ACCOUNT CREATED, 2. PERSONAL DETAILS CREATED, 3. VERIFICATION COMPLETED');

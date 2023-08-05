@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Constants\ProfileStatus;
 use App\Constants\UserType;
 
 class AuthUser
@@ -37,5 +38,10 @@ class AuthUser
     public static function isVerificationRequested(): bool
     {
         return auth()->user()->is_verification_requested;
+    }
+
+    public static function isVerified(): bool
+    {
+        return self::getProfileStatus() == ProfileStatus::VERIFICATION_COMPLETED;
     }
 }

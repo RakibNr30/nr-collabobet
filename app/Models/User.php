@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Constants\ProfileStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -64,6 +66,16 @@ class User extends Authenticatable implements HasMedia
         'is_agreement_accepted' => 'integer',
         'is_tc_accepted' => 'integer',
     ];
+
+    public function recommendations(): HasMany
+    {
+        return $this->hasMany(User::class, 'refer_affiliate_code', 'affiliate_code')->where('profile_status',ProfileStatus::VERIFICATION_COMPLETED);
+    }
+
+    public function notAttends(): HasMany
+    {
+        return $this->hasMany(User::class, 'refer_affiliate_code', 'affiliate_code')->where('profile_status', '!=' ,ProfileStatus::VERIFICATION_COMPLETED);
+    }
 
     public function getFullNameAttribute()
     {

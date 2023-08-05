@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('rewards', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->integer('type')->comment('1. Participant, 2. Recommendation, 3. Benefactor, 4. Genius');
+            $table->unsignedBigInteger('amount')->default(0);
+            $table->integer('total_rewards')->default(0);
+            $table->integer('claimed_rewards')->default(0);
+            $table->boolean('is_available')->default(false);
             $table->timestamps();
         });
     }

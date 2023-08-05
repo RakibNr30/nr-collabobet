@@ -113,9 +113,26 @@
                 </div>
             </div>
         @endif
+
+        @if(in_array(\App\Helpers\AuthUser::getProfileStatus(), [\App\Constants\ProfileStatus::ACCOUNT_CREATED]))
+            <div class="container-fluid- verification">
+                <div class="card">
+                    <div class="card-header pb-0 px-3">
+                        <h6 class="mb-0">Hi!</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <span class="text-primary">
+                            Before verify your identity, Please complete your previous step.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        @endif
+
     @endif
 
 @endsection
+
 @push('dashboard')
 
 @endpush

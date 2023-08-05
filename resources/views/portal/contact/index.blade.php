@@ -114,7 +114,7 @@
                                             Address
                                         </th>
                                         <td class="text-left text-xxs font-weight-bolder">
-                                            <p class="text-xs font-weight-bold mb-0">{{ $contact->address ?? '' }}</p>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $contact->address ?? '-' }}</p>
                                         </td>
                                     </tr>
                                     </thead>

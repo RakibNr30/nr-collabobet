@@ -95,7 +95,7 @@ class UserProfileController extends Controller
             return redirect()->back()->withInput($request->all());
         }
 
-        return redirect()->route('portal.dashboard.index');
+        return redirect()->route('portal.user-verification.edit');
     }
 
     public function getChangePassword()

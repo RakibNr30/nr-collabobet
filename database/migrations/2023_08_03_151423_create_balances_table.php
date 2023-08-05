@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('balances', function (Blueprint $table) {
             $table->id();
+            $table->unsignedDouble('amount')->default(0);
+            $table->string('uuid')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }

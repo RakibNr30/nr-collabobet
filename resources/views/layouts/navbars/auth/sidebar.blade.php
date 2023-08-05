@@ -24,7 +24,15 @@
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-user text-{{ (Request::is('portal/user') ? 'white' : 'dark')  }}"></i>
                     </div>
-                    <span class="nav-link-text ms-1">User</span>
+                    <span class="nav-link-text ms-1">Users</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ (Request::is('portal/transaction') ? 'active' : '') }} " href="{{ url('/portal/transaction') }}">
+                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-coins text-{{ (Request::is('portal/transaction') ? 'white' : 'dark')  }}"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Transactions</span>
                 </a>
             </li>
             <li class="nav-item">

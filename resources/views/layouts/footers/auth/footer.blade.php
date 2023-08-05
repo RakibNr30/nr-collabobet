@@ -13,7 +13,7 @@
                 </a>
             </li>
             <li class="nav-item f-nav">
-                <a href="#">
+                <a href="{{ route('portal.transaction.index') }}">
                     <i class="fas fa-coins" style="{{ Request::is('portal/transaction') ? 'color: #14dfa9;' : '' }}"></i>
                 </a>
             </li>

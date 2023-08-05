@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Constants\ProfileStatus;
+use App\Constants\RewardType;
 use App\Constants\UserType;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\RewardService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -31,12 +33,26 @@ class UserController extends Controller
 
             $user->update($request->all());
 
-            DB::commit();
+            if ($user->profile_status == ProfileStatus::VERIFICATION_COMPLETED) {
+                // reward for own
 
-            if ($user->profile_status == ProfileStatus::VERIFICATION_COMPLETED)
+                RewardService::update($user->id, RewardType::PARTICIPANT);
+
+                // reward for refer
+
+                $refer = User::query()->withCount(['recommendations'])->where('affiliate_code', $user->refer_affiliate_code)->first();
+
+                RewardService::update($refer->id, RewardType::RECOMMENDATION);
+
+                RewardService::update($refer->id, RewardType::GENIUS);
+
                 session()->flash('success', 'Verification accepted successfully.');
-            else
+            }
+            else {
                 session()->flash('success', 'Verification declined successfully.');
+            }
+
+            DB::commit();
 
         } catch (\Exception $exception) {
 

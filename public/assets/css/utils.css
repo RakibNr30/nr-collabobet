@@ -109,14 +109,43 @@
     margin-top: calc(var(--bs-gutter-y)*-1);
 }
 
-.dashboard .card, .user .card, .faq .card, .verification .card, .change-password .card {
+.dashboard .card,
+.user .card,
+.faq .card,
+.verification .card,
+.change-password .card,
+.transaction .card
+{
      box-shadow: unset;
      background-color: transparent;
      border-radius: unset;
      border: unset;
  }
-.dashboard .card-header, .user .card-header, .faq .card-header, .verification .card-header, .change-password .card-header {
+.dashboard .card-header,
+.user .card-header,
+.faq .card-header,
+.verification .card-header,
+.change-password .card-header,
+.transaction .card-header
+{
     background-color: unset;
+}
+
+.badge {
+    border-radius: 0.45rem;
+    display: inline-block;
+    font-size: .75em;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0.55em 0.9em;
+    text-align: center;
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+
+.badge.badge-info {
+    background-color: #0b5d6f;
+    color: #fff;
 }
 
 @media (max-width: 575.98px) {

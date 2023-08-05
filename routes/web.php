@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['middleware' => 'auth'])->prefix('portal')->name('portal.')->group(function () {
 
-    Route::get('/', [HomeController::class, 'home']);
+    Route::get('/', [HomeController::class, 'index']);
 
     // dashboard
 	Route::get('dashboard', [\App\Http\Controllers\Portal\DashboardController::class, 'index'])->name('dashboard.index');
@@ -34,6 +34,7 @@ Route::middleware(['middleware' => 'auth'])->prefix('portal')->name('portal.')->
 
     // other
 	Route::resource('user', \App\Http\Controllers\Portal\UserController::class);
+	Route::resource('transaction', \App\Http\Controllers\Portal\TransactionController::class);
     Route::get('profile', [\App\Http\Controllers\Portal\ProfileController::class, 'index'])->name('profile.index');
     Route::resource('faq', \App\Http\Controllers\Portal\FaqController::class);
     Route::resource('contact', \App\Http\Controllers\Portal\ContactController::class);

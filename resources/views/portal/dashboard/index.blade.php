@@ -98,7 +98,7 @@
                             <div class="d-flex flex-column h-100">
                                 <p class="mb-1 pt-2 text-bold">Welcome {{ auth()->user()->full_name }}</p>
 
-                                @if(!\App\Helpers\AuthUser::isVerificationRequested() && !\App\Constants\ProfileStatus::VERIFICATION_COMPLETED)
+                                @if(!\App\Helpers\AuthUser::isVerificationRequested() && \App\Helpers\AuthUser::getProfileStatus() != \App\Constants\ProfileStatus::VERIFICATION_COMPLETED)
                                 <a class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="{{ route('portal.user-verification.edit') }}">
                                     Verify Identity
                                     <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>

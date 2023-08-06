@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Constants\ProfileStatus;
 use App\Constants\UserType;
+use App\Helpers\SmsManager;
 use App\Http\Controllers\Controller;
 use App\Models\SmsVerification;
 use App\Models\User;
@@ -26,33 +27,6 @@ class RegisterController extends Controller
 
     public function store(Request $request)
     {
-        /*$attributes = request()->validate([
-            'mobile' => ['required', 'min:6', 'max:50', Rule::unique('users', 'mobile')],
-            'name' => ['required', 'max:50'],
-            'affiliate_code' => ['required', 'min:6', 'max:50', 'regex:/^[a-zA-Z0-9_]+$/', Rule::unique('users', 'username')],
-            'refer_affiliate_code' => ['required'],
-            'password' => ['required', 'min:6', 'max:20'],
-            'is_agreement_accepted' => ['accepted']
-        ]);
-
-        try {
-
-            $attributes['password'] = bcrypt($attributes['password']);
-
-            DB::beginTransaction();
-
-            $user = User::create($attributes);
-
-            DB::commit();
-
-            session()->flash('success', 'Your account has been created.');
-
-            Auth::login($user);
-
-        } catch (\Exception $exception) {
-            DB::rollBack();
-        }*/
-
         $verification = self::getMobileVerification();
 
         $rules = [];
@@ -146,6 +120,10 @@ class RegisterController extends Controller
                     'expired_at' => Carbon::now()->addMinutes(2),
                     'verification_id' => $verification_id,
                 ]);
+
+                if (SmsManager::isSendAble()) {
+                    SmsManager::sendSms($request->mobile, "COLLABOBET: Your verification code is: {$code}. You can use this code for next 2 minutes.");
+                }
 
                 DB::commit();
 

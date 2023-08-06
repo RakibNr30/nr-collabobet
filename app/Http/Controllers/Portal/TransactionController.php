@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Portal;
 use App\Constants\TransactionStatus;
 use App\Constants\TransactionType;
 use App\Helpers\AuthUser;
+use App\Helpers\SmsManager;
 use App\Http\Controllers\Controller;
 use App\Models\Balance;
 use App\Models\Transaction;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -118,6 +120,8 @@ class TransactionController extends Controller
 
         $data = $request->all();
 
+        $transactionAmount = $transaction->amount;
+
         try {
 
             $data['actioned_at'] = Carbon::now();
@@ -134,15 +138,28 @@ class TransactionController extends Controller
                     return redirect()->back();
                 }
 
-                $balance->update(['amount' => $balance->amount - $transaction->amount]);
+                $balance->update(['amount' => $balance->amount - $transactionAmount]);
 
                 $transaction->update($data);
+
+                $user = User::query()->findOrFail($transaction->user_id);
+
+                if (SmsManager::isSendAble()) {
+                    SmsManager::sendSms($user->mobile, "COLLABOBET: Congratulations! Your transaction amount {$transactionAmount}€ has been accepted.");
+                }
 
                 session()->flash('success', 'Transaction request accepted successful.');
             }
             else
             {
                 $transaction->update($data);
+
+                $user = User::query()->findOrFail($transaction->user_id);
+
+                if (SmsManager::isSendAble()) {
+                    SmsManager::sendSms($user->mobile, "COLLABOBET: We regret to inform you that your transaction amount {$transactionAmount}€ declined at this time.");
+                }
+
                 session()->flash('success', 'Transaction request declined successful.');
             }
 

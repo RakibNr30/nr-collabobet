@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Portal;
 
 use App\Constants\ProfileStatus;
 use App\Helpers\AuthUser;
+use App\Helpers\SmsManager;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Rules\MinimumAge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +21,7 @@ class UserProfileController extends Controller
         $request->validate([
             'first_name' => ['required', 'max:50'],
             'last_name' => ['required', 'max:50'],
-            'dob' => ['required', 'max:50'],
+            'dob' => ['required', 'date', new MinimumAge(21)],
             'affiliate_code' => ['required', 'min:6', 'max:50', 'regex:/^[a-zA-Z0-9_]+$/', Rule::unique('users', 'affiliate_code')],
             'password' => ['required', 'min:6', 'max:50', 'confirmed'],
         ]);
@@ -129,6 +131,10 @@ class UserProfileController extends Controller
             }
 
             $user->update($data);
+
+            if (SmsManager::isSendAble()) {
+                SmsManager::sendSms($user->mobile, "COLLABOBET: Your password has been successfully changed.");
+            }
 
             DB::commit();
 

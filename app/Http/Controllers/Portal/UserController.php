@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Portal;
 use App\Constants\ProfileStatus;
 use App\Constants\RewardType;
 use App\Constants\UserType;
+use App\Helpers\SmsManager;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\ReferralService;
@@ -48,9 +49,17 @@ class UserController extends Controller
 
                 RewardService::update($refer->id, RewardType::GENIUS);
 
+                if (SmsManager::isSendAble()) {
+                    SmsManager::sendSms($user->mobile, "COLLABOBET: Congratulations! your profile has been successfully verified.");
+                }
+
                 session()->flash('success', 'Verification accepted successfully.');
             }
             else {
+                if (SmsManager::isSendAble()) {
+                    SmsManager::sendSms($user->mobile, "COLLABOBET: We regret to inform you that your profile cannot be verified at this time.");
+                }
+
                 session()->flash('success', 'Verification declined successfully.');
             }
 

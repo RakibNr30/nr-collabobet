@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Helpers\AuthUser;
+use App\Helpers\SmsManager;
 use App\Http\Controllers\Controller;
 use App\Models\Balance;
 use App\Models\Reward;
@@ -53,7 +54,12 @@ class ProfileController extends Controller
 
             RewardService::getRewards(AuthUser::getId(), $data['type']);
 
-            session()->flash('success', 'Rewarded €' . $data['rewardable_amount'] . ' is successful.');
+            if (SmsManager::isSendAble()) {
+                $user = User::query()->findOrFail(AuthUser::getId());
+                SmsManager::sendSms($user->mobile, "COLLABOBET: Congratulations! You have successfully received a reward of {$data['rewardable_amount']}€.");
+            }
+
+            session()->flash('success', 'Rewarded ' . $data['rewardable_amount'] . '€ is successful.');
 
             DB::commit();
 

@@ -1,6 +1,6 @@
 <footer class="footer f-footer pt-3">
     @if(\App\Helpers\AuthUser::isUser())
-    <div class="container-fluid" style="background-color: #000; height: 48px;">
+    <div class="container-fluid f-nav-c" style="background-color: #000; height: 48px;">
         <ul class="nav nav-footer f-nav-main justify-content-center justify-content-lg-end">
             <li class="nav-item f-nav">
                 <a href="{{ route('portal.user-verification.edit') }}">

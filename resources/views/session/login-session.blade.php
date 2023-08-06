@@ -17,12 +17,13 @@
                   <form role="form" method="POST" action="/session">
                     @csrf
                     <label>Mobile</label>
-                    <div class="mb-3">
-                      <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile" value="01710115566" aria-label="Mobile" aria-describedby="mobile-addon">
+                      <div class="input-group mb-3">
+                          <span class="input-group-text">+1</span>
+                          <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile" value="0123456789" aria-label="Mobile" aria-describedby="mobile-addon">
+                      </div>
                       @error('mobile')
-                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                      <p class="text-danger text-xs mt-0">{{ $message }}</p>
                       @enderror
-                    </div>
                     <label>Password</label>
                     <div class="mb-3">
                       <input type="password" class="form-control" name="password" id="password" placeholder="Password" value="password" aria-label="Password" aria-describedby="password-addon">

@@ -8,6 +8,7 @@ use App\Helpers\SmsManager;
 use App\Http\Controllers\Controller;
 use App\Models\SmsVerification;
 use App\Models\User;
+use App\Rules\UsMobileNumber;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,10 +37,10 @@ class RegisterController extends Controller
         } else {
             $user = User::query()->where('mobile', $request->mobile)->whereNotNull('mobile_verified_at')->first();
             if (!empty($user)) {
-                $rules['mobile'] = ['required', 'min:6', 'max:50'];
+                $rules['mobile'] = ['required', new UsMobileNumber()];
             } else {
                 $rules['refer_affiliate_code'] = ['required', 'max:50'];
-                $rules['mobile'] = ['required', 'min:6', 'max:50', Rule::unique('users', 'mobile')];
+                $rules['mobile'] = ['required',  new UsMobileNumber(), Rule::unique('users', 'mobile')];
             }
         }
 

@@ -38,12 +38,13 @@
                                     <div class="card-body">
                                         <form role="form text-left" method="POST" action="{{ route('register.store') }}">
                                             @csrf
-                                            <div class="mb-3">
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">+1</span>
                                                 <input type="text" class="form-control" placeholder="Mobile" name="mobile" id="mobile" aria-label="Mobile" aria-describedby="mobile-addon" value="{{ old('mobile') }}">
-                                                @error('mobile')
-                                                <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                                @enderror
                                             </div>
+                                            @error('mobile')
+                                            <p class="text-danger text-xs mt-0">{{ $message }}</p>
+                                            @enderror
                                             <div class="mb-3">
                                                 <input type="text" class="form-control" placeholder="Your friend's affiliate code" name="refer_affiliate_code" id="refer_affiliate_code" aria-label="Refer Affiliate Code" aria-describedby="refer-affiliate-code-addon" value="{{ old('refer_affiliate_code') }}">
                                                 @error('refer_affiliate_code')

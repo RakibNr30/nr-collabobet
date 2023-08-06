@@ -175,6 +175,7 @@
     display: table;
     width: 100%;
 }
+
 .f-nav {
     width: 25%;
     height: 48px;
@@ -225,8 +226,7 @@
 }
 
 .nav-image img {
-    height: 80px;
-    position: absolute;
+    height: 48px;
 }
 
 @media (min-width: 1199.98px) {
@@ -235,6 +235,11 @@
     }
     .notification {
         left: 17.11rem;
+    }
+
+    .f-nav-c {
+        width: calc(100% - 17.11rem);
+        margin-left: 17.11rem;
     }
 }
 

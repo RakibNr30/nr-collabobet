@@ -2,7 +2,7 @@
  return [
 
      'sms_login_info' => false,
-     'sms_api' => 'http://66.45.237.70/api.php?username=RakibNr30&password=9A4BS8EF&number=[TO]&message=[TEXT]',
+     'sms_api' => 'http://api.smsala.com/api/SendSMS?api_id=API1410152086106&api_password=zEP9L43LhB&sms_type=T&encoding=T&sender_id=tstala&phonenumber=[TO]&textmessage=[TEXT]',
 
      'media_collection' => [
          'user' => [

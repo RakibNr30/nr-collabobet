@@ -2,39 +2,65 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Constants\ProfileStatus;
+use App\Helpers\SmsManager;
 use App\Http\Controllers\Controller;
+use App\Models\PasswordReset;
+use App\Models\User;
+use App\Rules\UsMobileNumber;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\DB;
 
 class ResetController extends Controller
 {
     public function create()
     {
-        return view('session/reset-password/sendEmail');
-
+        return view('session/reset-password/sendToken');
     }
 
-    public function sendEmail(Request $request)
+    public function sendToken(Request $request)
     {
-        if(env('IS_DEMO'))
-        {
-            return redirect()->back()->withErrors(['msg2' => 'You are in a demo version, you can\'t recover your password.']);
-        }
-        else{
-            $request->validate(['email' => 'required|email']);
+        $request->validate(['mobile' => 'required', new UsMobileNumber()]);
 
-            $status = Password::sendResetLink(
-                $request->only('email')
-            );
+        $user = User::query()->where('mobile', $request->mobile)->where('profile_status', '>=', ProfileStatus::PERSONAL_DETAILS_CREATED)->first();
 
-            return $status === Password::RESET_LINK_SENT
-                        ? back()->with(['success' => __($status)])
-                        : back()->withErrors(['email' => __($status)]);
+        if (empty($user)) {
+            session()->flash('error', 'User not found.');
+            return redirect()->back()->withInput($request->all());
         }
+
+        $code = rand(100000, 999999);
+
+        try {
+            DB::beginTransaction();
+
+            PasswordReset::query()->updateOrCreate([
+                'mobile' => $request->mobile
+            ], [
+                'mobile' => $request->mobile,
+                'token' => $code,
+            ]);
+
+            if (SmsManager::isSendAble()) {
+                SmsManager::sendSms($request->mobile, "COLLABOBET: Your verification code is: {$code}. You can use this code for reset password.");
+            }
+
+            session()->flash('success', 'A verification code has been sent to your mobile. Please enter this code for reset password.');
+
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+
+            session()->flash('error', 'Something went wrong.');
+
+            return redirect()->back()->withInput($request->all());
+        }
+
+        return redirect()->route('password.reset', ['mobile' => $request->mobile]);
     }
 
-    public function resetPass($token)
+    public function resetPass($mobile)
     {
-        return view('session/reset-password/resetPassword', ['token' => $token]);
+        return view('session/reset-password/resetPassword', compact('mobile'));
     }
 }

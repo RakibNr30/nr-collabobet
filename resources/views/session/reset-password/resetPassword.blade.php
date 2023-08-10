@@ -6,19 +6,40 @@
     <div class="container">
         <div class="row">
             <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
-                <div class="card card-plain mt-8">
+                <div class="card mt-8">
+                    @if($errors->any())
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                            <span class="alert-text text-white">
+                                {{$errors->first()}}
+                            </span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                <i class="fa fa-close" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    @endif
+
+                    @include('components.alert')
+
                     <div class="card-header pb-0 text-left bg-transparent">
                         <h4 class="mb-0">Change password</h4>
                     </div>
                     <div class="card-body">
                         <form role="form" action="/reset-password" method="POST">
                             @csrf
-                            <input type="hidden" name="token" value="{{ $token }}">
                             <div>
-                                <label for="email">Email</label>
+                                <div>
+                                    <label for="code">Mobile</label>
+                                    <div class="">
+                                        <input id="mobile" name="mobile" type="text" value="{{ old('mobile') ?? $mobile }}" class="form-control" placeholder="Mobile" aria-label="Mobile" aria-describedby="mobile-addon" readonly>
+                                        @error('mobile')
+                                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <label for="code">Verification Code</label>
                                 <div class="">
-                                    <input id="email" name="email" type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
-                                    @error('email')
+                                    <input id="code" name="code" type="text" class="form-control" value="{{ old('code') }}" placeholder="Verification Code" aria-label="Verification Code" aria-describedby="code-addon">
+                                    @error('code')
                                         <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                     @enderror
                                 </div>
@@ -44,15 +65,11 @@
                             <div class="text-center">
                                 <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Recover your password</button>
                             </div>
+                            <p class="text-sm mt-3 mb-0">Remembered the password? <a href="{{ route('login') }}" class="text-dark font-weight-bolder">Sign in</a></p>
                         </form>
                     </div>
                 </div>
             </div>
-            {{--<div class="col-md-6">
-                <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
-                    <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url('../assets/img/curved-images/curved6.jpg')"></div>
-                </div>
-            </div>--}}
         </div>
     </div>
 </div>

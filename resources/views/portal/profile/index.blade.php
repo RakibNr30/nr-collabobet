@@ -46,7 +46,7 @@
                                         Collabobet Balance
                                     </th>
                                     <td class="text-left text-xxs font-weight-bolder">
-                                        <p class="text-xs font-weight-bold mb-0">{{ $balance->amount ?? 0 }}€</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $balance->amount ?? 0 }}$</p>
                                     </td>
                                 </tr>
                                 {{--<tr>
@@ -96,9 +96,12 @@
                                 <tr>
                                     <th class="text-left text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Donations
+                                        <p class="text-xs text-primary font-weight-bold" style="font-size: 6px !important;">
+                                            We donate $10 for every participant.<br>Thats the amount we donated thank you!
+                                        </p>
                                     </th>
                                     <td class="text-left text-xxs font-weight-bolder">
-                                        <p class="text-xs font-weight-bold mb-0">{{ $user->refer_reward_amount ?? 0 }}€</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $user->refer_reward_amount ?? 0 }}$</p>
                                     </td>
                                 </tr>
                                 </thead>
@@ -117,7 +120,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="numbers">
-                                        <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[€400] Participant – Participate in Collabobet</p>
+                                        <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[$400] Participant – Participate in Collabobet</p>
                                         <span style="font-size: 10px;">For your participation you just need to verify on your account</span>
                                         <h5 class="font-weight-bolder mt-2">
                                             <span class="text-primary text-xs font-weight-bolder">{{ $rewards[\App\Constants\RewardType::PARTICIPANT]['claimed_rewards'] ?? 0 }} / {{ \App\Constants\RewardType::getMax(\App\Constants\RewardType::PARTICIPANT) }}</span>
@@ -149,7 +152,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="numbers">
-                                        <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[€200] Recommendation – Recommend Collabobet to your friends</p>
+                                        <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[$200] Recommendation – Recommend Collabobet to your friends</p>
                                         <span style="font-size: 10px;">Your friend need to sign up on collabobet and verify his account</span>
                                         <h5 class="font-weight-bolder mt-2">
                                             <span class="text-primary text-xs font-weight-bolder">{{ $rewards[\App\Constants\RewardType::RECOMMENDATION]['claimed_rewards'] ?? 0 }} / {{ \App\Constants\RewardType::getMax(\App\Constants\RewardType::RECOMMENDATION) }}</span>
@@ -181,7 +184,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="numbers">
-                                        <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[€100] Benefactor – Reach Donations</p>
+                                        <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[$100] Benefactor – Reach Donations</p>
                                         <span style="font-size: 10px;">WirWe donate $10 for each participant to charity.</span>
                                         <h5 class="font-weight-bolder mt-2">
                                             <span class="text-primary text-xs font-weight-bolder">{{ $rewards[\App\Constants\RewardType::BENEFACTOR]['claimed_rewards'] ?? 0 }} / {{ \App\Constants\RewardType::getMax(\App\Constants\RewardType::BENEFACTOR) }}</span>
@@ -213,7 +216,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="numbers">
-                                        <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[€500] Genius of Persuasion – Recommend 20 people</p>
+                                        <p class="text-xs text-primary mb-0 text-capitalize font-weight-bold">[$500] Genius of Persuasion – Recommend 20 people</p>
                                         <span style="font-size: 10px;">All your recommendations need to sign up on collabobet and verify their account</span>
                                         <h5 class="font-weight-bolder mt-2">
                                             <span class="text-primary text-xs font-weight-bolder">{{ $rewards[\App\Constants\RewardType::GENIUS]['claimed_rewards'] ?? 0 }} / {{ \App\Constants\RewardType::getMax(\App\Constants\RewardType::GENIUS) }}</span>

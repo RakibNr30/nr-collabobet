@@ -12,43 +12,51 @@
     <ul class="navbar-nav {{ \App\Helpers\AuthUser::isAdmin() ? '' : 'sidenav-custom' }}">
         @if(\App\Helpers\AuthUser::isAdmin())
             <li class="nav-item">
-                <a class="nav-link {{ (Request::is('portal/dashboard') ? 'active' : '') }}" href="{{ url('/portal/dashboard') }}">
+                <a class="nav-link {{ \App\Helpers\UrlHelper::isMatch('portal/dashboard') ? 'active' : '' }}" href="{{ url('/portal/dashboard') }}">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-chart-line text-{{ (Request::is('portal/dashboard') ? 'white' : 'dark')  }}"></i>
+                        <i class="fas fa-chart-line text-{{ \App\Helpers\UrlHelper::isMatch('portal/dashboard') ? 'white' : 'dark' }}"></i>
                     </div>
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ (Request::is('portal/user') ? 'active' : '') }} " href="{{ url('/portal/user') }}">
+                <a class="nav-link {{ \App\Helpers\UrlHelper::isMatch('portal/user') ? 'active' : '' }} " href="{{ url('/portal/user') }}">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-user text-{{ (Request::is('portal/user') ? 'white' : 'dark')  }}"></i>
+                        <i class="fas fa-user text-{{ \App\Helpers\UrlHelper::isMatch('portal/user') ? 'white' : 'dark' }}"></i>
                     </div>
                     <span class="nav-link-text ms-1">Users</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ (Request::is('portal/transaction') ? 'active' : '') }} " href="{{ url('/portal/transaction') }}">
+                <a class="nav-link {{ \App\Helpers\UrlHelper::isMatch('portal/transaction') ? 'active' : '' }} " href="{{ url('/portal/transaction') }}">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-coins text-{{ (Request::is('portal/transaction') ? 'white' : 'dark')  }}"></i>
+                        <i class="fas fa-coins text-{{ \App\Helpers\UrlHelper::isMatch('portal/transaction') ? 'white' : 'dark' }}"></i>
                     </div>
                     <span class="nav-link-text ms-1">Transactions</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ (Request::is('portal/faq') ? 'active' : '') }} " href="{{ url('/portal/faq') }}">
+                <a class="nav-link {{ \App\Helpers\UrlHelper::isMatch('portal/faq') ? 'active' : '' }} " href="{{ url('/portal/faq') }}">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-solid fa-question text-{{ (Request::is('portal/faq') ? 'white' : 'dark')  }}"></i>
+                        <i class="fas fa-solid fa-question text-{{ \App\Helpers\UrlHelper::isMatch('portal/faq') ? 'white' : 'dark' }}"></i>
                     </div>
                     <span class="nav-link-text ms-1">Faqs</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ (Request::is('portal/contact') ? 'active' : '') }} " href="{{ url('/portal/contact') }}">
+                <a class="nav-link {{ \App\Helpers\UrlHelper::isMatch('portal/contact') ? 'active' : '' }} " href="{{ url('/portal/contact') }}">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-map-marker-alt text-{{ (Request::is('portal/contact') ? 'white' : 'dark')  }}"></i>
+                        <i class="fas fa-map-marker-alt text-{{ \App\Helpers\UrlHelper::isMatch('portal/contact') ? 'white' : 'dark'  }}"></i>
                     </div>
                     <span class="nav-link-text ms-1">Contacts</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ \App\Helpers\UrlHelper::isMatch('portal/terms-and-conditions') ? 'active' : '' }} " href="{{ url('/portal/terms-and-conditions') }}">
+                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-shield-alt text-{{ \App\Helpers\UrlHelper::isMatch('portal/terms-and-conditions') ? 'white' : 'dark' }}"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Privacy & Policy</span>
                 </a>
             </li>
         @endif

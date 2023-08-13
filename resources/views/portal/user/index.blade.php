@@ -62,7 +62,7 @@
                                                 <p class="text-xs font-weight-bold mb-0">{{ $user->last_name ?? '-' }}</p>
                                             </td>
                                             <td class="text-center">
-                                                <p class="text-xs font-weight-bold mb-0">{{ $user->mobile ?? '-' }}</p>
+                                                <p class="text-xs font-weight-bold mb-0">{{ config('core.country_code') }}{{ $user->mobile ?? '-' }}</p>
                                             </td>
                                             <td class="text-center">
                                                 <p class="text-xs font-weight-bold mb-0">{{ \Carbon\Carbon::parse($user->dob)->format('Y.m.d') ?? '-' }}</p>
@@ -113,7 +113,7 @@
                                         </tr>
                                     @empty
                                         <tr class="">
-                                            <td class="text-center" colspan="10">No data found.</td>
+                                            <td class="text-center text-xs" colspan="10">No data found.</td>
                                         </tr>
                                     @endforelse
                                     </tbody>

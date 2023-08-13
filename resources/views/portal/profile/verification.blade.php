@@ -62,7 +62,7 @@
                                         <div class="form-check form-check-info text-left">
                                             <input class="form-check-input" type="checkbox" name="is_tc_accepted" id="flexCheckDefault" value="{{ 1 }}" checked>
                                             <label class="form-check-label" for="flexCheckDefault">
-                                                I confirm my acceptance of the attached <a href="javascript:;" class="text-dark font-weight-bolder">terms and conditions</a>
+                                                I confirm my acceptance of the attached <a href="{{ route('portal.terms-and-conditions.index') }}" class="text-dark font-weight-bolder">terms and conditions</a>
                                             </label>
                                             @error('is_tc_accepted')
                                             <p class="text-danger text-xs mt-2">First, agree to the terms and conditions, then try to verify again.</p>

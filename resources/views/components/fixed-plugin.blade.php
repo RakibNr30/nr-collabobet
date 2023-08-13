@@ -19,7 +19,7 @@
         <div>
           <h6 class="mb-0">Mobile Number</h6>
         </div>
-        {{ auth()->user()->mobile ?? '-' }}
+          {{ config('core.country_code') }}{{ auth()->user()->mobile ?? '-' }}
 
         <div class="mt-3">
           <h6 class="mb-0">Safety</h6>
@@ -38,6 +38,13 @@
               <br>
               <a href="{{ route('portal.contact.index') }}" class="switch-trigger background-color my-1 {{ Request::is('portal/contact') ? 'text-primary' : '' }}">
                   Contact Us
+              </a>
+
+              <div class="mt-3">
+                  <h6 class="mb-0">Rules</h6>
+              </div>
+              <a href="{{ route('portal.terms-and-conditions.index') }}" class="switch-trigger background-color {{ Request::is('portal/terms-and-conditions') ? 'text-primary' : '' }}">
+                  Terms and Conditions
               </a>
           @endif
 

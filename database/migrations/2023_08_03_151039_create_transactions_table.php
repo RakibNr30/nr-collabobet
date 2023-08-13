@@ -16,9 +16,7 @@ return new class extends Migration
             $table->integer('type')->comment('1. IN, 2. OUT');
             $table->unsignedBigInteger('balance_id');
             $table->unsignedBigInteger('amount')->default(0);
-            $table->string('account_owner')->nullable();
-            $table->string('blz')->nullable();
-            $table->string('iban')->nullable();
+            $table->string('btc_wallet')->nullable();
             $table->text('annotation')->nullable();
             $table->string('uuid')->nullable();
             $table->unsignedBigInteger('user_id');

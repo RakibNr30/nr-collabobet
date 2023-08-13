@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Constants\ProfileStatus;
 use App\Constants\TransactionStatus;
 use App\Constants\TransactionType;
+use App\Constants\UserType;
 use App\Helpers\AuthUser;
 use App\Helpers\SmsManager;
 use App\Http\Controllers\Controller;
@@ -23,7 +25,6 @@ class TransactionController extends Controller
 
         if (AuthUser::isUser()) {
             $transactions = Transaction::query()
-                ->where('type', TransactionType::OUT)
                 ->where('user_id', AuthUser::getId())
                 ->orderBy('status')
                 ->orderBy('created_at')
@@ -37,7 +38,6 @@ class TransactionController extends Controller
                 ->first();
         } else {
             $transactions = Transaction::query()
-                ->where('type', TransactionType::OUT)
                 ->orderBy('status')
                 ->orderBy('created_at')
                 ->orderBy('actioned_at')
@@ -47,14 +47,26 @@ class TransactionController extends Controller
         return view('portal.transaction.index', compact('transactions', 'lastPendingTransaction'));
     }
 
+    public function create()
+    {
+        if (!AuthUser::isAdmin()) {
+            abort(404);
+        }
+
+        $users = User::query()
+            ->select(['id', 'first_name', 'last_name', 'affiliate_code'])
+            ->where('user_type', UserType::USER)
+            ->where('profile_status', ProfileStatus::VERIFICATION_COMPLETED)
+            ->get();
+
+        return view('portal.transaction.create', compact('users'));
+    }
+
     public function store(Request $request)
     {
         $rules = [
             'amount' => 'numeric|required|min:1|max:999999',
-            'account_owner' => 'required|max:100',
-            'blz' => 'required|max:100',
-            'iban' => 'required|max:100',
-            'annotation' => 'required|max:1000',
+            'btc_wallet' => 'required|max:255',
         ];
 
         $request->validate($rules);
@@ -109,9 +121,17 @@ class TransactionController extends Controller
         return redirect()->route('portal.transaction.index');
     }
 
+    public function show(Transaction $transaction)
+    {
+        return view('portal.transaction.show', compact('transaction'));
+    }
 
     public function update(Request $request, Transaction $transaction)
     {
+        if (!AuthUser::isAdmin()) {
+            abort(404);
+        }
+
         $rules = [
             'status' => 'required',
         ];
@@ -145,7 +165,7 @@ class TransactionController extends Controller
                 $user = User::query()->findOrFail($transaction->user_id);
 
                 if (SmsManager::isSendAble()) {
-                    SmsManager::sendSms($user->mobile, "COLLABOBET: Congratulations! Your transaction amount {$transactionAmount}€ has been accepted.");
+                    SmsManager::sendSms($user->mobile, "COLLABOBET: Congratulations! Your transaction amount {$transactionAmount}$ has been accepted.");
                 }
 
                 session()->flash('success', 'Transaction request accepted successful.');
@@ -157,7 +177,7 @@ class TransactionController extends Controller
                 $user = User::query()->findOrFail($transaction->user_id);
 
                 if (SmsManager::isSendAble()) {
-                    SmsManager::sendSms($user->mobile, "COLLABOBET: We regret to inform you that your transaction amount {$transactionAmount}€ declined at this time.");
+                    SmsManager::sendSms($user->mobile, "COLLABOBET: We regret to inform you that your transaction amount {$transactionAmount}$ declined at this time.");
                 }
 
                 session()->flash('success', 'Transaction request declined successful.');
@@ -172,6 +192,64 @@ class TransactionController extends Controller
             session()->flash('error', 'Something went wrong.');
 
             return redirect()->back();
+        }
+
+        return redirect()->route('portal.transaction.index');
+    }
+
+    public function storeSpecial(Request $request)
+    {
+        if (!AuthUser::isAdmin()) {
+            abort(404);
+        }
+
+        $rules = [
+            'user_id' => 'required',
+            'amount' => 'required|numeric|min:1|max:999999',
+            'annotation' => 'required|max:1000',
+        ];
+
+        $request->validate($rules);
+
+        $data = $request->all();
+
+        try {
+
+            DB::beginTransaction();
+
+            $balance = Balance::query()->where('user_id', $data['user_id'])->first();
+
+            if (empty($balance)) {
+                $balance = Balance::query()->create([
+                    'user_id' => $data['user_id'],
+                    'uuid' => Str::uuid()->toString(),
+                    'amount' => 0
+                ]);
+            }
+
+            $balance->update([
+                'amount' => $balance->amount + $data['amount'],
+            ]);
+
+            $data['type'] = TransactionType::IN;
+            $data['balance_id'] = $balance->id;
+            $data['uuid'] = Str::uuid()->toString();
+            $data['user_id'] = $request->user_id;
+            $data['status'] = TransactionStatus::ACCEPTED;
+
+            Transaction::query()->create($data);
+
+            DB::commit();
+
+            session()->flash('success', 'Transaction request successful.');
+
+        } catch (\Exception $exception) {
+
+            DB::rollBack();
+
+            session()->flash('error', 'Something went wrong.');
+
+            return redirect()->back()->withInput($request->all());
         }
 
         return redirect()->route('portal.transaction.index');

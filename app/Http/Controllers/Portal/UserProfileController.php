@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Rules\MinimumAge;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -18,6 +17,10 @@ class UserProfileController extends Controller
 {
     public function postPersonalDetails(Request $request)
     {
+        if (!AuthUser::isUser()) {
+            abort(404);
+        }
+
         $request->validate([
             'first_name' => ['required', 'max:50'],
             'last_name' => ['required', 'max:50'],
@@ -57,11 +60,19 @@ class UserProfileController extends Controller
 
     public function getVerification()
     {
+        if (!AuthUser::isUser()) {
+            abort(404);
+        }
+
         return view('portal.profile.verification');
     }
 
     public function postVerification(Request $request)
     {
+        if (!AuthUser::isUser()) {
+            abort(404);
+        }
+
         $request->validate([
             'photo_id_front' => ['required', 'mimes:jpg,jpeg,png', 'max: 2048'],
             'photo_id_back' => ['required', 'mimes:jpg,jpeg,png', 'max: 2048'],

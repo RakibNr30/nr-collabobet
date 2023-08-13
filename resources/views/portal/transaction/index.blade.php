@@ -20,6 +20,9 @@
                                     <form action="{{ route('portal.transaction.store') }}" method="POST" role="form text-left" enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
+                                            <div class="col-md-12">
+                                                <p class="text-sm text-primary">You can just top up your Venmo, Cashapp or PayPal by giving us your BTC Wallet Adress and switch it into Dollar yourself on these Apps.</p>
+                                            </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="amount" class="form-control-label">Amount</label>
@@ -33,43 +36,10 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="account_owner" class="form-control-label">Account Owner</label>
+                                                    <label for="btc_wallet" class="form-control-label">BTC-Wallet</label>
                                                     <div class="">
-                                                        <input class="form-control @error('account_owner') border border-danger rounded-3 @enderror" value="{{ old('account_owner') }}" type="text" placeholder="Account Owner" id="account_owner" name="account_owner">
-                                                        @error('account_owner')
-                                                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="blz" class="form-control-label">BLZ</label>
-                                                    <div class="">
-                                                        <input class="form-control @error('blz') border border-danger rounded-3 @enderror" value="{{ old('blz') }}" type="text" placeholder="BLZ" id="blz" name="blz">
-                                                        @error('blz')
-                                                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="iban" class="form-control-label">IBAN</label>
-                                                    <div class="">
-                                                        <input class="form-control @error('iban') border border-danger rounded-3 @enderror" value="{{ old('iban') }}" type="text" placeholder="IBAN" id="iban" name="iban">
-                                                        @error('iban')
-                                                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="annotation" class="form-control-label">Annotation</label>
-                                                    <div class="">
-                                                        <textarea rows="6" class="form-control @error('annotation') border border-danger rounded-3 @enderror" type="text" placeholder="Annotation" id="annotation" name="annotation">{{ old('annotation') }}</textarea>
-                                                        @error('annotation')
+                                                        <input class="form-control @error('btc_wallet') border border-danger rounded-3 @enderror" value="{{ old('btc_wallet') }}" type="text" placeholder="BTC-Wallet" id="btc_wallet" name="btc_wallet">
+                                                        @error('btc_wallet')
                                                         <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                                         @enderror
                                                     </div>
@@ -98,8 +68,11 @@
                     <div class="card-header pb-4">
                         <div class="d-flex flex-row justify-content-between">
                             <div>
-                                <h5 class="mb-0">Transactions</h5>
+                                <h5 class="mb-0">Transactions (Debit)</h5>
                             </div>
+                            @if(\App\Helpers\AuthUser::isAdmin())
+                                <a href="{{ route('portal.transaction.create') }}" class="btn bg-gradient-primary btn-xs text-xs mb-0" type="button" style="padding: 10px;">Give Special Money</a>
+                            @endif
                         </div>
                     </div>
                     <div class="card-body px-0 pt-2 pb-2">
@@ -116,29 +89,19 @@
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Amount
                                     </th>
-                                    @if(\App\Helpers\AuthUser::isAdmin())
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            A/C owner
-                                        </th>
-                                    @endif
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        BLZ
-                                    </th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        IBAN
+                                        BTC-Wallet
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Status
                                     </th>
-                                    @if(\App\Helpers\AuthUser::isAdmin())
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Action
-                                        </th>
-                                    @endif
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Action
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @forelse($transactions as $index => $transaction)
+                                @forelse($transactions->where('type', \App\Constants\TransactionType::OUT) as $index => $transaction)
                                     <tr>
                                         <td class="ps-4">
                                             <p class="text-xs font-weight-bold mb-0">{{ $index + 1 }}</p>
@@ -149,22 +112,17 @@
                                         <td class="text-center">
                                             <p class="text-xs font-weight-bold mb-0">{{ $transaction->amount ?? 0 }}</p>
                                         </td>
-                                        @if(\App\Helpers\AuthUser::isAdmin())
-                                            <td class="text-center">
-                                                <p class="text-xs font-weight-bold mb-0">{{ $transaction->account_owner ?? '-' }}</p>
-                                            </td>
-                                        @endif
                                         <td class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">{{ $transaction->blz ?? '-' }}</p>
-                                        </td>
-                                        <td class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">{{ $transaction->iban ?? '-' }}</p>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $transaction->btc_wallet ?? '-' }}</p>
                                         </td>
                                         <td class="text-center">
                                             <p class="text-xs font-weight-bold mb-0">{{ \App\Constants\TransactionStatus::getLabel($transaction->status ?? 0) ?? '-' }}</p>
                                         </td>
-                                        @if(\App\Helpers\AuthUser::isAdmin())
-                                            <td class="text-center">
+                                        <td class="text-center">
+                                            <a href="{{ route('portal.transaction.show', [$transaction]) }}" class="mx-2" data-bs-toggle="tooltip" data-bs-original-title="View">
+                                                <i class="fas fa-eye text-secondary"></i>
+                                            </a>
+                                            @if(\App\Helpers\AuthUser::isAdmin())
                                                 @if($transaction->status == \App\Constants\TransactionStatus::PENDING)
                                                     <a href="#" onclick="submit('acceptTransaction{{ $index }}')" class="mx-2" data-bs-toggle="tooltip" data-bs-original-title="Accept">
                                                         <i class="fas fa-check text-info"></i>
@@ -182,15 +140,73 @@
                                                         @method('PUT')
                                                         <input type="hidden" name="status" value="{{ \App\Constants\TransactionStatus::DECLINED }}">
                                                     </form>
-                                                @else
-                                                    <span style="font-size: 10px;font-weight: 600;">{{ $transaction->actioned_at ? \Carbon\Carbon::parse($transaction->actioned_at)->format('Y.m.d h:i A') : '-' }}</span>
                                                 @endif
-                                            </td>
-                                        @endif
+                                           @endif
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr class="">
-                                        <td class="text-center" colspan="{{ \App\Helpers\AuthUser::isAdmin() ? 8 : 6 }}">No data found.</td>
+                                        <td class="text-center text-xs" colspan="{{ 6 }}">No data found.</td>
+                                    </tr>
+                                @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-3">
+                            {{ $transactions->links('components.pagination') }}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card mb-2 mx-2">
+                    <div class="card-header pb-4">
+                        <div class="d-flex flex-row justify-content-between">
+                            <div>
+                                <h5 class="mb-0">Transactions (Credit)</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pt-2 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        ID
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        DateTime
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Amount
+                                    </th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Action
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @forelse($transactions->where('type', \App\Constants\TransactionType::IN) as $index => $transaction)
+                                    <tr>
+                                        <td class="ps-4">
+                                            <p class="text-xs font-weight-bold mb-0">{{ $index + 1 }}</p>
+                                        </td>
+                                        <td class="text-center">
+                                            <p class="text-xs font-weight-bold mb-0">{{ \Carbon\Carbon::parse($transaction->created_at)->format('Y.m.d h:i A') ?? '-' }}</p>
+                                        </td>
+                                        <td class="text-center">
+                                            <p class="text-xs font-weight-bold mb-0">{{ $transaction->amount ?? 0 }}</p>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="{{ route('portal.transaction.show', [$transaction]) }}" class="mx-2" data-bs-toggle="tooltip" data-bs-original-title="View">
+                                                <i class="fas fa-eye text-secondary"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr class="">
+                                        <td class="text-center text-xs" colspan="{{ 6 }}">No data found.</td>
                                     </tr>
                                 @endforelse
                                 </tbody>

@@ -1,18 +1,9 @@
 <!DOCTYPE html>
 
-@if (\Request::is('rtl'))
-  <html dir="rtl" lang="ar">
-@else
-  <html lang="en" >
-@endif
-
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  @if (env('IS_DEMO'))
-      <x-demo-metas></x-demo-metas>
-  @endif
 
   <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}">
   <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
@@ -40,22 +31,6 @@
     @yield('guest')
   @endguest
 
-  {{--@if(session()->has('success'))
-    <div x-data="{ show: true}"
-        x-init="setTimeout(() => show = false, 4000)"
-        x-show="show"
-        class="position-fixed notification bg-success right-3 text-sm py-2 px-4 bottom-0 right-0 w-100 text-center" style="background-color: #17c1e8; color: #fff; {{ auth()->check() && \App\Helpers\AuthUser::isUser() ? 'bottom: 48px !important;' : '' }}">
-      <p class="m-0">{{ session('success')}}</p>
-    </div>
-  @endif
-  @if(session()->has('error'))
-      <div x-data="{ show: true}"
-           x-init="setTimeout(() => show = false, 4000)"
-           x-show="show"
-           class="position-fixed notification bg-danger right-3 text-sm py-2 px-4 bottom-0 right-0 w-100 text-center" style="{{ auth()->check() && \App\Helpers\AuthUser::isUser() ? 'bottom: 48px !important;' : '' }}">
-          <p class="m-0 text-white">{{ session('error')}}</p>
-      </div>
-  @endif--}}
     <!--   Core JS Files   -->
   <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
   <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
@@ -64,7 +39,6 @@
   <script src="{{ asset('assets/js/plugins/fullcalendar.min.js') }}"></script>
   <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
 
-  @stack('rtl')
   @stack('dashboard')
   <script>
     var win = navigator.platform.indexOf('Win') > -1;

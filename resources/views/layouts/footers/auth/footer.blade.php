@@ -4,22 +4,22 @@
         <ul class="nav nav-footer f-nav-main justify-content-center justify-content-lg-end">
             <li class="nav-item f-nav">
                 <a href="{{ route('portal.user-verification.edit') }}">
-                    <i class="fas fa-hands-helping" style="{{ Request::is('portal/user-verification') ? 'color: #14dfa9;' : '' }}"></i>
+                    <i class="fas fa-hands-helping" style="{{ \App\Helpers\UrlHelper::isMatch('portal/user-verification') ? 'color: #14dfa9;' : '' }}"></i>
                 </a>
             </li>
             <li class="nav-item f-nav">
                 <a href="{{ route('portal.profile.index') }}">
-                    <i class="fas fa-user" style="{{ Request::is('portal/profile') ? 'color: #14dfa9;' : '' }}"></i>
+                    <i class="fas fa-user" style="{{ \App\Helpers\UrlHelper::isMatch('portal/profile') ? 'color: #14dfa9;' : '' }}"></i>
                 </a>
             </li>
             <li class="nav-item f-nav">
                 <a href="{{ route('portal.transaction.index') }}">
-                    <i class="fas fa-coins" style="{{ Request::is('portal/transaction') ? 'color: #14dfa9;' : '' }}"></i>
+                    <i class="fas fa-coins" style="{{ \App\Helpers\UrlHelper::isMatch('portal/transaction') ? 'color: #14dfa9;' : '' }}"></i>
                 </a>
             </li>
             <li class="nav-item f-nav">
                 <a href="{{ route('portal.contact.index') }}">
-                    <i class="far fa-envelope" style="{{ Request::is('portal/contact') ? 'color: #14dfa9;' : '' }}"></i>
+                    <i class="far fa-envelope" style="{{ \App\Helpers\UrlHelper::isMatch('portal/contact') ? 'color: #14dfa9;' : '' }}"></i>
                 </a>
             </li>
         </ul>

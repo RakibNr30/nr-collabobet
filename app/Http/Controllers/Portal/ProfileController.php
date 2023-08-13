@@ -16,6 +16,10 @@ class ProfileController extends Controller
 {
     public function index()
     {
+        if (!AuthUser::isUser()) {
+            abort(404);
+        }
+
         $user = User::query()->withCount(['recommendations', 'notAttends'])->find(AuthUser::getId());
         $balance = Balance::query()->where('user_id', $user->id)->firstOrCreate(['user_id' => $user->id]);
 
@@ -38,6 +42,10 @@ class ProfileController extends Controller
 
     public function postRewards(Request $request)
     {
+        if (!AuthUser::isUser()) {
+            abort(404);
+        }
+
         $rules = [
             'type' => 'required',
             'rewardable' => 'required|numeric|min:1',
@@ -56,10 +64,10 @@ class ProfileController extends Controller
 
             if (SmsManager::isSendAble()) {
                 $user = User::query()->findOrFail(AuthUser::getId());
-                SmsManager::sendSms($user->mobile, "COLLABOBET: Congratulations! You have successfully received a reward of {$data['rewardable_amount']}€.");
+                SmsManager::sendSms($user->mobile, "COLLABOBET: Congratulations! You have successfully received a reward of {$data['rewardable_amount']}$.");
             }
 
-            session()->flash('success', 'Rewarded ' . $data['rewardable_amount'] . '€ is successful.');
+            session()->flash('success', 'Rewarded ' . $data['rewardable_amount'] . '$ is successful.');
 
             DB::commit();
 

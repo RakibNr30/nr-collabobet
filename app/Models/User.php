@@ -86,6 +86,11 @@ class User extends Authenticatable implements HasMedia
         return "{$this->first_name} {$this->last_name}";
     }
 
+    public function getFullNameUsernameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name} ({$this->affiliate_code})";
+    }
+
     // get photo id front attribute
     public function getPhotoIdFrontAttribute()
     {

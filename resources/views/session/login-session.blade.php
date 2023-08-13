@@ -21,7 +21,7 @@
                                         @csrf
                                         <label>Mobile</label>
                                         <div class="input-group mb-3">
-                                            <span class="input-group-text">+1</span>
+                                            <span class="input-group-text">{{ config('core.country_code') }}</span>
                                             <input type="text" class="form-control" name="mobile" id="mobile"
                                                    placeholder="Mobile" value="{{ old('mobile') }}" aria-label="Mobile"
                                                    aria-describedby="mobile-addon">

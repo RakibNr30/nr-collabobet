@@ -53,7 +53,7 @@
                                               action="{{ route('register.store') }}">
                                             @csrf
                                             <div class="input-group mb-3">
-                                                <span class="input-group-text">+1</span>
+                                                <span class="input-group-text">{{ config('core.country_code') }}</span>
                                                 <input type="text" class="form-control" placeholder="Mobile"
                                                        name="mobile" id="mobile" aria-label="Mobile"
                                                        aria-describedby="mobile-addon" value="{{ old('mobile') }}">

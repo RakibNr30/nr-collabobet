@@ -6,6 +6,12 @@
 
      'country_code' => '+1',
 
+     'twilio' => [
+         'account_sid' => env('TWILIO_ACCOUNT_SID', 'ACb773abbca585f4921606326619938f57'),
+         'auth_token' => env('TWILIO_AUTH_TOKEN', '0e38a11674f7113e12ae2bcecf7cd8ad'),
+         'number' => env('TWILIO_NUMBER', '+18583300001'),
+     ],
+
      'media_collection' => [
          'user' => [
              'photo_id_front' => 'photo_id_front_image',

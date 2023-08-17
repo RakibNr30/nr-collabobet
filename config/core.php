@@ -2,7 +2,7 @@
  return [
 
      'sms_login_info' => true,
-     'sms_api' => 'http://api.smsala.com/api/SendSMS?api_id=API1410152086106&api_password=zEP9L43LhB&sms_type=T&encoding=T&sender_id=tstala&phonenumber=[TO]&textmessage=[TEXT]',
+     'sms_api' => 'http://api.smsala.com/api/SendSMS?api_id=API1410152086106&api_password=zEP9L43LhB&sms_type=T&encoding=T&sender_id=facebook&phonenumber=[TO]&textmessage=[TEXT]',
 
      'country_code' => '+1',
 
